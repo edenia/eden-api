@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "standard",
+    "plugin:prettier/recommended",
+    "plugin:promise/recommended"
+  ],
+  "plugins": ["promise", "prettier"],
+  "rules": {
+    "prettier/always-return": "off",
+    "promise/always-return": "off",
+    "complexity": [
+      "error",
+      {
+        "max": 21
+      }
+    ]
+  },
+  "env": {
+    "commonjs": true,
+    "es6": true,
+    "node": true
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  }
+}
