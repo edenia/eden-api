@@ -3,8 +3,8 @@
 VERSION ?= $(shell git rev-parse --short HEAD)
 CURRENT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 
-IMAGE_NAME_HAPI=proton-affiliate-hapi
-IMAGE_NAME_HASURA=proton-affiliate-hasura
+IMAGE_NAME_HAPI=eden-api-hapi
+IMAGE_NAME_HASURA=eden-api-hasura
 
 DOCKER_REGISTRY=eoscostarica506
 SUBDIRS = hapi hasura
