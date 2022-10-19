@@ -1,12 +1,5 @@
 version: "3.8"
 services:
-  wallet:
-    container_name: "boilerplate-wallet"
-    build: ./wallet
-    ports:
-      - "8888:8888"
-    volumes:
-      - ./tmp/wallet/:/opt/application/data/
   postgres:
     container_name: "boilerplate-postgres"
     image: postgres:13.3-alpine
@@ -37,7 +30,6 @@ services:
       HAPI_NETWORK_CHAIN_ID: "${HAPI_NETWORK_CHAIN_ID}"
       HAPI_NETWORK_BASE_ACCOUNT: "${HAPI_NETWORK_BASE_ACCOUNT}"
       HAPI_NETWORK_BASE_PASSWORD: "${HAPI_NETWORK_BASE_PASSWORD}"
-      HAPI_NETWORK_WALLET_URL: "${HAPI_NETWORK_WALLET_URL}"
       HAPI_HASURA_URL: "${HAPI_HASURA_URL}"
       HAPI_HASURA_ADMIN_SECRET: "${HAPI_HASURA_ADMIN_SECRET}"
   hasura:

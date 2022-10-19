@@ -9,7 +9,6 @@ K8S_FILES := $(shell find ./kubernetes -name '*.yaml' | sed 's:./kubernetes/::g'
 
 run:
 	make -B postgres
-	make -B wallet
 	make -B hapi
 	make -B hasura
 	make -B -j 3 hapi-logs hasura-cli
@@ -18,11 +17,6 @@ postgres:
 	@docker-compose stop postgres
 	@docker-compose up -d --build postgres
 	@echo "done postgres"
-
-wallet:
-	@docker-compose stop wallet
-	@docker-compose up -d --build wallet
-	@echo "done wallet"
 
 hapi:
 	@docker-compose stop hapi
@@ -67,7 +61,6 @@ clean:
 	@rm -rf tmp/db_data
 	@rm -rf tmp/hapi
 	@rm -rf hapi/node_modules
-	@rm -rf tmp/wallet
 	@docker system prune
 
 build-kubernetes: ##@devops Generate proper k8s files based on the templates
@@ -89,9 +82,7 @@ deploy-kubernetes: $(K8S_BUILD_DIR)
 		--cert ./ssl/eosio.cr.crt \
 		-n $(NAMESPACE)  || echo "SSL cert already configured.";
 	@echo "Creating configmaps..."
-	@kubectl create configmap -n $(NAMESPACE) \
-	wallet-config \
-	--from-file wallet/config/ || echo "Wallet configuration already created.";
+	@kubectl create configmap -n $(NAMESPACE)
 	@echo "Applying kubernetes files..."
 	@for file in $(shell find $(K8S_BUILD_DIR) -name '*.yaml' | sed 's:$(K8S_BUILD_DIR)/::g'); do \
 		kubectl apply -f $(K8S_BUILD_DIR)/$$file -n $(NAMESPACE) || echo "${file} Cannot be updated."; \
