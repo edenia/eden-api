@@ -37,9 +37,9 @@ jobs:
             build-kubernetes
         env:
           # general
-          NAMESPACE: boilerplate
-          INGRESS_HOST: boilerplate.eosio.cr
-          INGRESS_GRAPHQL_HOST: graphql-boilerplate.eosio.cr
+          NAMESPACE: eden-api
+          # INGRESS_HOST: boilerplate.eosio.cr
+          INGRESS_GRAPHQL_HOST: eden-api.edenia.cloud
           # Postgres
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -50,8 +50,6 @@ jobs:
           HAPI_SERVER_ADDRESS: 0.0.0.0
           HAPI_NETWORK_API: "https://jungle.eosio.cr"
           HAPI_NETWORK_CHAIN_ID: "2a02a0053e5a8cf73a56ba0fda11e4d92e0238a4a2aa74fccf46d5a910746840"
-          HAPI_NETWORK_BASE_ACCOUNT: ${{ secrets.HAPI_NETWORK_BASE_ACCOUNT }}
-          HAPI_NETWORK_BASE_PASSWORD: ${{ secrets.HAPI_NETWORK_BASE_PASSWORD }}
           HAPI_HASURA_URL: ${{ secrets.HAPI_HASURA_URL }}
           HAPI_HASURA_ADMIN_SECRET: ${{ secrets.HAPI_HASURA_ADMIN_SECRET }}
           # hasura
@@ -65,7 +63,7 @@ jobs:
         uses: steebchen/kubectl@v1.1.0
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-          NAMESPACE: boilerplate
+          NAMESPACE: eden-api
           K8S_BUILD_DIR: build_k8s
         with:
           args: version && make deploy-kubernetes

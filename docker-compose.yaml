@@ -1,18 +1,18 @@
 version: "3.8"
 services:
   postgres:
-    container_name: "boilerplate-postgres"
+    container_name: "eden-api-postgres"
     image: postgres:13.3-alpine
     ports:
       - "5432:5432"
     volumes:
-      - ${POSTGRES_DATA}:/var/lib/postgresql/data
+      - ${POSTGRES_DATA}:/var/lib/postgresql/data/pgdata
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       POSTGRES_DB: "${POSTGRES_DB}"
   hapi:
-    container_name: "boilerplate-hapi"
+    container_name: "eden-api-hapi"
     image: node:16.0.0
     ports:
       - "9090:9090"
@@ -28,12 +28,10 @@ services:
       HAPI_SERVER_ADDRESS: "${HAPI_SERVER_ADDRESS}"
       HAPI_NETWORK_API: "${HAPI_NETWORK_API}"
       HAPI_NETWORK_CHAIN_ID: "${HAPI_NETWORK_CHAIN_ID}"
-      HAPI_NETWORK_BASE_ACCOUNT: "${HAPI_NETWORK_BASE_ACCOUNT}"
-      HAPI_NETWORK_BASE_PASSWORD: "${HAPI_NETWORK_BASE_PASSWORD}"
       HAPI_HASURA_URL: "${HAPI_HASURA_URL}"
       HAPI_HASURA_ADMIN_SECRET: "${HAPI_HASURA_ADMIN_SECRET}"
   hasura:
-    container_name: "boilerplate-hasura"
+    container_name: "eden-api-hasura"
     image: hasura/graphql-engine:v2.11.0-beta.1.cli-migrations-v3
     ports:
       - "8080:8080"
