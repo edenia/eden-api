@@ -1,9 +1,9 @@
 {
-  "name": "eoscrbackendboilerplate",
+  "name": "edenapi",
   "version": "0.1.0",
   "main": "src/index.js",
-  "description": "EOSCR Backend Boilerplate",
-  "repository": "https://github.com/eoscostarica/backend-boilerplate.git",
+  "description": "Eden Api developed by Edenia ",
+  "repository": "https://github.com/edenia/eden-api.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
