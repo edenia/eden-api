@@ -1,0 +1,1 @@
+CREATE TABLE "public"."member" ("account" varchar NOT NULL, "name" varchar NOT NULL, "status" integer NOT NULL, "nft_template_id" integer NOT NULL, "election_participation_status" integer NOT NULL, "election_rank" integer NOT NULL, "representative" varchar NOT NULL, "encryption_key" varchar NOT NULL, "profile" jsonb NOT NULL, PRIMARY KEY ("account") );

@@ -1,0 +1,1 @@
+CREATE TABLE "public"."vote" ("account" varchar NOT NULL, "producers" jsonb NOT NULL, "weight" integer NOT NULL, PRIMARY KEY ("account") , FOREIGN KEY ("account") REFERENCES "public"."member"("account") ON UPDATE restrict ON DELETE restrict);
