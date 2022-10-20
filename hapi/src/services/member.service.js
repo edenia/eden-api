@@ -45,14 +45,32 @@ const getVotes = async (lowerBound, upperBound, limit = 100) => {
 const updateMembers = async startFrom => {
   const membersData = []
   const votesData = []
-  const { rows, more, next_key: nextKey } = await getEdenMembers(startFrom)
+  const {
+    rows,
+    more,
+    next_key: nextKey
+  } = await getEdenMembers(startFrom, null, 30)
 
-  for (const member of rows) {
-    const { immutable_data: immutableData } =
-      await atomicassetsUtil.api.getTemplate(
-        apiConfig.edenContract,
-        member.nft_template_id.toString()
-      )
+  for (const [i, member] of rows.entries()) {
+    if (!member.status) {
+      console.log('Cannot register INACTIVE member:', member)
+      continue
+    }
+
+    console.log(`${i}. GETTING-DATA-FOR ${member.account}`)
+
+    let immutableData = null
+    try {
+      ;({ immutable_data: immutableData } =
+        await atomicassetsUtil.api.getTemplate(
+          apiConfig.edenContract,
+          member.nft_template_id.toString()
+        ))
+    } catch (err) {
+      console.log('Error getting template id', member.nft_template_id)
+      console.log('Error getting profile', member.account)
+    }
+
     const profile = immutableData
       ? {
           name: immutableData.name,
@@ -76,12 +94,12 @@ const updateMembers = async startFrom => {
     }
   }
 
-  if (more) {
-    updateMembers(nextKey)
-  }
-
   await memberGql.addMany(membersData)
   await voteGql.addMany(votesData)
+
+  if (more) {
+    await updateMembers(nextKey)
+  }
 }
 
 const updateMembersWorker = () => {
