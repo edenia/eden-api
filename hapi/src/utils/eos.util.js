@@ -1,14 +1,7 @@
-const { Api, JsonRpc } = require('eosjs')
-const { JsSignatureProvider } = require('eosjs/dist/eosjs-jssig')
-const fetch = require('node-fetch')
-const { TextEncoder, TextDecoder } = require('util')
 const EosApi = require('eosjs-api')
 
 const { eosConfig } = require('../config')
 
-const textEncoder = new TextEncoder()
-const textDecoder = new TextDecoder()
-const rpc = new JsonRpc(eosConfig.endpoint, { fetch })
 const eosApi = EosApi({
   httpEndpoint: eosConfig.endpoint,
   verbose: false,
@@ -68,13 +61,11 @@ const getCurrencyBalance = (code, account, symbol) =>
 const getTableRows = options => eosApi.getTableRows({ json: true, ...options })
 
 module.exports = {
-  newAccount,
   generateRandomAccountName,
   getAccount,
   getBlock,
   getAbi,
   getCodeHash,
   getCurrencyBalance,
-  getTableRows,
-  transact
+  getTableRows
 }

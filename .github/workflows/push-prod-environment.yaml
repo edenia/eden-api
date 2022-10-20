@@ -39,9 +39,8 @@ jobs:
         env:
           # general
           NAMESPACE: api-eden
-          # INGRESS_HOST: boilerplate.eosio.cr
           INGRESS_GRAPHQL_HOST: eden-api.edenia.cloud
-          # Postgres
+          # postgres
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
@@ -49,10 +48,13 @@ jobs:
           # hapi
           HAPI_SERVER_PORT: 9090
           HAPI_SERVER_ADDRESS: 0.0.0.0
-          HAPI_NETWORK_API: "api.eosn.io"
+          HAPI_NETWORK_API: "https://api.eosn.io"
           HAPI_NETWORK_CHAIN_ID: "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"
           HAPI_HASURA_URL: ${{ secrets.HAPI_HASURA_URL }}
           HAPI_HASURA_ADMIN_SECRET: ${{ secrets.HAPI_HASURA_ADMIN_SECRET }}
+          HAPI_EDENSMARTPRX_CONTRACT: "edensmartprx"
+          HAPI_EDEN_CONTRACT: "genesis.eden"
+          HAPI_AA_BASE_URL: "https://eos.api.atomicassets.io"
           # hasura
           HASURA_GRAPHQL_ENABLE_CONSOLE: true
           HASURA_GRAPHQL_DATABASE_URL: ${{ secrets.HASURA_GRAPHQL_DATABASE_URL }}

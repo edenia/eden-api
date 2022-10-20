@@ -6,7 +6,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ${POSTGRES_DATA}:/var/lib/postgresql/data/pgdata
+      - postgres_data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
@@ -30,9 +30,12 @@ services:
       HAPI_NETWORK_CHAIN_ID: "${HAPI_NETWORK_CHAIN_ID}"
       HAPI_HASURA_URL: "${HAPI_HASURA_URL}"
       HAPI_HASURA_ADMIN_SECRET: "${HAPI_HASURA_ADMIN_SECRET}"
+      HAPI_EDENSMARTPRX_CONTRACT: "${HAPI_EDENSMARTPRX_CONTRACT}"
+      HAPI_EDEN_CONTRACT: "${HAPI_EDEN_CONTRACT}"
+      HAPI_AA_BASE_URL: "${HAPI_AA_BASE_URL}"
   hasura:
     container_name: "eden-api-hasura"
-    image: hasura/graphql-engine:v2.11.0-beta.1.cli-migrations-v3
+    image: hasura/graphql-engine:v2.13.0.cli-migrations-v3
     ports:
       - "8080:8080"
     depends_on:
@@ -49,9 +52,11 @@ services:
       HASURA_GRAPHQL_ACTION_BASE_URL: "${HASURA_GRAPHQL_ACTION_BASE_URL}"
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       # Local Development Configurations It is recommended to disable this in production
-      HASURA_GRAPHQL_DEV_MODE: "true"
+      # HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
       HASURA_GRAPHQL_ENABLE_LOGGING: "true"
       # disabled security for local development
-      # HASURA_GRAPHQL_ADMIN_SECRET: "${HASURA_GRAPHQL_ADMIN_SECRET}"
-      # HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "${HASURA_GRAPHQL_UNAUTHORIZED_ROLE}"
+      HASURA_GRAPHQL_ADMIN_SECRET: "${HASURA_GRAPHQL_ADMIN_SECRET}"
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: "${HASURA_GRAPHQL_UNAUTHORIZED_ROLE}"
+volumes:
+  postgres_data:

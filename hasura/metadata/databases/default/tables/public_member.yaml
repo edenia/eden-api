@@ -1,0 +1,13 @@
+table:
+  name: member
+  schema: public
+object_relationships:
+  - name: vote
+    using:
+      manual_configuration:
+        column_mapping:
+          account: account
+        insertion_order: null
+        remote_table:
+          name: vote
+          schema: public

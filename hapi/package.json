@@ -1,9 +1,9 @@
 {
-  "name": "eoscrbackendboilerplate",
+  "name": "edenapi",
   "version": "0.1.0",
   "main": "src/index.js",
-  "description": "EOSCR Backend Boilerplate",
-  "repository": "https://github.com/eoscostarica/backend-boilerplate.git",
+  "description": "Eden Api developed by Edenia ",
+  "repository": "https://github.com/edenia/eden-api.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
@@ -20,6 +20,7 @@
   "dependencies": {
     "@hapi/boom": "^10.0.0",
     "@hapi/hapi": "^20.2.2",
+    "atomicassets": "^1.5.1",
     "axios": "^0.27.2",
     "eosjs": "^22.1.0",
     "eosjs-api": "^7.0.4",
@@ -27,8 +28,7 @@
     "graphql-request": "^4.3.0",
     "http-status-codes": "^2.1.4",
     "joi": "^17.4.1",
-    "node": "^18.7.0",
-    "node-fetch": "^3.2.10"
+    "node-fetch": "2.6.7"
   },
   "devDependencies": {
     "env-cmd": "^10.1.0",
