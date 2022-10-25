@@ -94,9 +94,10 @@ const updateMembers = async startFrom => {
     )
 
     membersData.push({ ...member, profile })
+    const vote = smartProxyVotes.rows[0]
 
     if (smartProxyVotes.rows.length) {
-      smartProxyVotesData.push(smartProxyVotes.rows[0])
+      smartProxyVotesData.push({ ...vote, flag: !!vote.flag })
     }
 
     const eosioVoters = await getVotes(
