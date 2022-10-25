@@ -2,11 +2,11 @@ table:
   name: vote
   schema: public
 select_permissions:
-- permission:
-    allow_aggregations: true
-    columns:
-    - account
-    - weight
-    - producers
-    filter: {}
-  role: guest
+  - role: guest
+    permission:
+      columns:
+        - account
+        - weight
+        - producers
+      filter: {}
+      allow_aggregations: true
