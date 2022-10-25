@@ -1,6 +1,7 @@
 const Jwt = require('@hapi/jwt')
 
 const { jwtConfig } = require('../config')
+const accessGql = require('../gql/access.gql')
 
 const generate = (ttlSec, { account, role }) => {
   return Jwt.token.generate(
@@ -45,16 +46,19 @@ const auth = server => {
       const {
         'https://hasura.io/jwt/claims': {
           'x-hasura-user-id': id,
-          'x-hasura-user-email': email,
-          'x-hasura-default-role': role,
-          'x-hasura-customer-features': customerFeatures
+          'x-hasura-default-role': role
         }
       } = artifacts.decoded.payload
       const token = artifacts.token
 
+      const existingAccess = await accessGql.get(
+        { access_token: { _eq: token } },
+        1
+      )
+
       return {
-        isValid: true,
-        credentials: { user: { id, email, role, customerFeatures }, token }
+        isValid: !!existingAccess?.state,
+        credentials: { user: { id, role }, token }
       }
     }
   })

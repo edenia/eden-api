@@ -2,7 +2,7 @@ table:
   name: eosio_voters
   schema: public
 select_permissions:
-  - role: guest
+  - role: client
     permission:
       columns:
         - owner

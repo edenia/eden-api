@@ -1,4 +1,4 @@
-const { hasuraUtil } = require('../utils')
+const hasuraUtil = require('../utils/hasura.util')
 
 const add = async payload => {
   const mutation = `
