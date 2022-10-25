@@ -1,6 +1,6 @@
 const { apiConfig } = require('../config')
 const { eosUtil, atomicassetsUtil } = require('../utils')
-const { memberGql, voteGql } = require('../gql')
+const { memberGql, voteGql, eosioVotersGql } = require('../gql')
 
 const edenDefaultTableOptions = {
   code: apiConfig.edenContract,
@@ -9,7 +9,14 @@ const edenDefaultTableOptions = {
 
 const smartProxyDefaultTableOptions = {
   code: apiConfig.edensmartprxContract,
-  scope: apiConfig.edensmartprxContract
+  scope: apiConfig.edensmartprxContract,
+  table: 'votes'
+}
+
+const eosioDefaultTableOptions = {
+  code: 'eosio',
+  scope: 'eosio',
+  table: 'voters'
 }
 
 const getEdenMembers = async (lowerBound, upperBound, limit = 100) => {
@@ -27,10 +34,9 @@ const getEdenMembers = async (lowerBound, upperBound, limit = 100) => {
   }
 }
 
-const getVotes = async (lowerBound, upperBound, limit = 100) => {
+const getVotes = async (options, lowerBound, upperBound, limit = 100) => {
   const { rows, ...rest } = await eosUtil.getTableRows({
-    ...smartProxyDefaultTableOptions,
-    table: 'votes',
+    ...options,
     lower_bound: lowerBound,
     upper_bound: upperBound,
     limit
@@ -44,7 +50,8 @@ const getVotes = async (lowerBound, upperBound, limit = 100) => {
 
 const updateMembers = async startFrom => {
   const membersData = []
-  const votesData = []
+  const smartProxyVotesData = []
+  const eosioVotersData = []
   const {
     rows,
     more,
@@ -79,23 +86,36 @@ const updateMembers = async startFrom => {
           social: JSON.parse(immutableData.social)
         }
       : {}
-    const votes = await getVotes(member.account, member.account, 1)
+    const smartProxyVotes = await getVotes(
+      smartProxyDefaultTableOptions,
+      member.account,
+      member.account,
+      1
+    )
 
     membersData.push({ ...member, profile })
 
-    if (votes.rows.length) {
-      const vote = votes.rows[0]
+    if (smartProxyVotes.rows.length) {
+      smartProxyVotesData.push(smartProxyVotes.rows[0])
+    }
 
-      votesData.push({
-        account: vote.account,
-        producers: vote.producers,
-        weight: vote.weight
-      })
+    const eosioVoters = await getVotes(
+      eosioDefaultTableOptions,
+      member.account,
+      member.account,
+      1
+    )
+
+    if (eosioVoters.rows.length) {
+      const vote = eosioVoters.rows[0]
+
+      eosioVotersData.push({ ...vote, is_proxy: !!vote.is_proxy })
     }
   }
 
   await memberGql.addMany(membersData)
-  await voteGql.addMany(votesData)
+  await voteGql.addMany(smartProxyVotesData)
+  await eosioVotersGql.addMany(eosioVotersData)
 
   if (more) {
     await updateMembers(nextKey)
@@ -105,7 +125,6 @@ const updateMembers = async startFrom => {
 const updateMembersWorker = () => {
   return {
     name: 'UPDATE EDEN MEMBERS',
-    // interval: affiliateConfig.verifyExpiredInterval,
     interval: 60 * 60, // 1h
     action: updateMembers
   }
