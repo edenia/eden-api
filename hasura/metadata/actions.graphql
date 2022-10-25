@@ -1,0 +1,54 @@
+type Mutation {
+  addAccess(
+    access: AccessInput!
+  ): AccessOutput
+}
+
+type Mutation {
+  revokeAccess(
+    access: RevokeInput!
+  ): RevokeOutput
+}
+
+type Mutation {
+  updateAccess(
+    access: UpdateInput!
+  ): UpdateOutput
+}
+
+input SampleInput {
+  username: String!
+  password: String!
+}
+
+input AccessInput {
+  account: String!
+  role: String!
+  expirationTimeSec: Float!
+}
+
+input RevokeInput {
+  account: String!
+}
+
+input UpdateInput {
+  account: String!
+  expirationTimeSec: Float!
+}
+
+type SampleOutput {
+  accessToken: String!
+}
+
+type AccessOutput {
+  accessToken: String!
+}
+
+type RevokeOutput {
+  result: Boolean!
+}
+
+type UpdateOutput {
+  accessToken: String!
+}
+

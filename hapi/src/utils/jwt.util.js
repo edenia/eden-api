@@ -22,6 +22,7 @@ const generate = (ttlSec, { account, role }) => {
 }
 
 const create = (account, role, expirationTime) => {
+  // TODO: use ttlSec by defuault expirationTime is not provided
   const ttlSec = parseInt(expirationTime)
 
   return generate(ttlSec, { account, role })

@@ -5,14 +5,14 @@ const { accessService } = require('../services')
 
 module.exports = {
   method: 'POST',
-  path: '/add-access',
+  path: '/update-access',
   handler: async ({
     payload: {
       input: { access }
     }
   }) => {
     try {
-      return await accessService.add(access)
+      return await accessService.update(access.account, access.expirationTime)
     } catch (error) {
       return Boom.badRequest(error.message)
     }
@@ -23,7 +23,6 @@ module.exports = {
         input: Joi.object({
           access: Joi.object({
             account: Joi.string().required(),
-            role: Joi.string().required(),
             expirationTimeSec: Joi.number().required()
           }).required()
         }).required()

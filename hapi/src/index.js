@@ -1,8 +1,10 @@
 const Hapi = require('@hapi/hapi')
+const Jwt = require('@hapi/jwt')
 
 const { serverConfig } = require('./config')
 const routes = require('./routes')
 const { workerService } = require('./services')
+const { jwtUtil } = require('./utils')
 
 const init = async () => {
   const server = Hapi.server({
@@ -13,6 +15,10 @@ const init = async () => {
     },
     debug: { request: ['handler'] }
   })
+
+  await server.register(Jwt)
+
+  jwtUtil.auth(server)
 
   server.route(routes)
   await server.start()

@@ -1,3 +1,4 @@
+- "!include public_access.yaml"
 - "!include public_eosio_voters.yaml"
 - "!include public_member.yaml"
 - "!include public_vote.yaml"

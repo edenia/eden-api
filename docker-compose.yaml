@@ -33,6 +33,11 @@ services:
       HAPI_EDENSMARTPRX_CONTRACT: "${HAPI_EDENSMARTPRX_CONTRACT}"
       HAPI_EDEN_CONTRACT: "${HAPI_EDEN_CONTRACT}"
       HAPI_AA_BASE_URL: "${HAPI_AA_BASE_URL}"
+      HAPI_JWT_ALGO: "${HAPI_JWT_ALGO}"
+      HAPI_JWT_SECRET: "${HAPI_JWT_SECRET}"
+      HAPI_JWT_ISS: "${HAPI_JWT_ISS}"
+      HAPI_JWT_TTL_SEC: "${HAPI_JWT_TTL_SEC}"
+      HAPI_JWT_MAX_TTL_SEC: "${HAPI_JWT_MAX_TTL_SEC}"
   hasura:
     container_name: "eden-api-hasura"
     image: hasura/graphql-engine:v2.13.0.cli-migrations-v3
@@ -50,6 +55,7 @@ services:
       HASURA_GRAPHQL_METADATA_DIR: /metadata
       HASURA_GRAPHQL_SEEDS_DIR: /seeds
       HASURA_GRAPHQL_ACTION_BASE_URL: "${HASURA_GRAPHQL_ACTION_BASE_URL}"
+      HASURA_GRAPHQL_JWT_SECRET: "${HASURA_GRAPHQL_JWT_SECRET}"
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       # Local Development Configurations It is recommended to disable this in production
       # HASURA_GRAPHQL_DEV_MODE: "true"

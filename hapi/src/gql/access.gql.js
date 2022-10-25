@@ -5,6 +5,7 @@ const add = async payload => {
     mutation ($payload: access_insert_input!) {
       insert_access_one(object: $payload) {
         account
+        access_token
       }
     }
   `
@@ -13,17 +14,18 @@ const add = async payload => {
   return data.insert_access_one
 }
 
-const updateByPk = async (id, payload) => {
+const updateByPk = async (account, payload) => {
   const mutation = `
-    mutation ($id: uuid!, $payload: access_set_input!) {
-      update_access_by_pk(pk_columns: {id: $id}, _set: $payload) {
+    mutation ($account: String!, $payload: access_set_input!) {
+      update_access_by_pk(pk_columns: {account: $account}, _set: $payload) {
         account
+        access_token
       }
     }
   `
   const { update_access_by_pk: updateAccessByPk } =
     await hasuraUtil.instance.request(mutation, {
-      id,
+      account,
       payload
     })
 
@@ -32,7 +34,7 @@ const updateByPk = async (id, payload) => {
 
 const get = async (where, limit = 1) => {
   const query = `
-    query ($where: access_bool_exp, $limit: number) {
+    query ($where: access_bool_exp, $limit: Int!) {
       access(where: $where, limit: $limit) {
         account
         role

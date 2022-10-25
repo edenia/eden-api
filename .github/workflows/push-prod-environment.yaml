@@ -55,12 +55,18 @@ jobs:
           HAPI_EDENSMARTPRX_CONTRACT: "edensmartprx"
           HAPI_EDEN_CONTRACT: "genesis.eden"
           HAPI_AA_BASE_URL: "https://eos.api.atomicassets.io"
+          HAPI_JWT_ALGO: ${{ secrets.HAPI_JWT_ALGO }}
+          HAPI_JWT_SECRET: ${{ secrets.HAPI_JWT_SECRET }}
+          HAPI_JWT_ISS: ${{ secrets.HAPI_JWT_ISS }}
+          HAPI_JWT_TTL_SEC: 31556952 # 1 year
+          HAPI_JWT_MAX_TTL_SEC: 157784760 # 5 years
           # hasura
           HASURA_GRAPHQL_ENABLE_CONSOLE: true
           HASURA_GRAPHQL_DATABASE_URL: ${{ secrets.HASURA_GRAPHQL_DATABASE_URL }}
           HASURA_GRAPHQL_ADMIN_SECRET: ${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}
           HASURA_GRAPHQL_UNAUTHORIZED_ROLE: ${{ secrets.HASURA_GRAPHQL_UNAUTHORIZED_ROLE }}
           HASURA_GRAPHQL_ACTION_BASE_URL: ${{ secrets.HASURA_GRAPHQL_ACTION_BASE_URL }}
+          HASURA_GRAPHQL_JWT_SECRET: ${{ secrets.HASURA_GRAPHQL_JWT_SECRET }}
 
       - name: Deploy kubernetes files
         uses: steebchen/kubectl@v1.1.0

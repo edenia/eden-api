@@ -1,6 +1,29 @@
-actions: []
+actions:
+  - name: addAccess
+    definition:
+      kind: synchronous
+      handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/add-access'
+      forward_client_headers: true
+  - name: revokeAccess
+    definition:
+      kind: synchronous
+      handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/revoke-access'
+      forward_client_headers: true
+  - name: updateAccess
+    definition:
+      kind: synchronous
+      handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/update-access'
+      forward_client_headers: true
 custom_types:
   enums: []
-  input_objects: []
-  objects: []
+  input_objects:
+    - name: SampleInput
+    - name: AccessInput
+    - name: RevokeInput
+    - name: UpdateInput
+  objects:
+    - name: SampleOutput
+    - name: AccessOutput
+    - name: RevokeOutput
+    - name: UpdateOutput
   scalars: []
