@@ -1,0 +1,1 @@
+CREATE TABLE "public"."eosio_voters" ("owner" varchar NOT NULL, "proxy" varchar NOT NULL, "producers" jsonb NOT NULL, "staked" integer NOT NULL, "last_vote_weight" varchar NOT NULL, "proxied_vote_weight" varchar NOT NULL, "is_proxy" boolean NOT NULL, "flags1" integer NOT NULL, "reserved2" integer NOT NULL, "reserved3" varchar NOT NULL, PRIMARY KEY ("owner") );
