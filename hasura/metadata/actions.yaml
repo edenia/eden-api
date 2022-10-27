@@ -4,6 +4,13 @@ actions:
       kind: synchronous
       handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/add-access'
       forward_client_headers: true
+  - name: getEosioVoters
+    definition:
+      kind: ""
+      handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/get-eosio-voters'
+      forward_client_headers: true
+    permissions:
+      - role: client
   - name: revokeAccess
     definition:
       kind: synchronous
@@ -21,9 +28,11 @@ custom_types:
     - name: AccessInput
     - name: RevokeInput
     - name: UpdateInput
+    - name: EosioVotersInput
   objects:
     - name: SampleOutput
     - name: AccessOutput
     - name: RevokeOutput
     - name: UpdateOutput
+    - name: EosioVotersOutput
   scalars: []

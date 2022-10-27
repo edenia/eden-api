@@ -4,6 +4,12 @@ type Mutation {
   ): AccessOutput
 }
 
+type Query {
+  getEosioVoters(
+    filter: EosioVotersInput!
+  ): EosioVotersOutput
+}
+
 type Mutation {
   revokeAccess(
     access: RevokeInput!
@@ -36,6 +42,12 @@ input UpdateInput {
   expirationTimeSec: Float!
 }
 
+input EosioVotersInput {
+  limit: Int!
+  offset: Int!
+  orderBy: jsonb
+}
+
 type SampleOutput {
   accessToken: String!
 }
@@ -50,5 +62,9 @@ type RevokeOutput {
 
 type UpdateOutput {
   accessToken: String!
+}
+
+type EosioVotersOutput {
+  voters: [jsonb!]
 }
 

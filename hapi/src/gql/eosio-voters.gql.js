@@ -15,4 +15,36 @@ const addMany = async voters => {
   return data
 }
 
-module.exports = { addMany }
+const get = async ({ where = {}, limit = 100, offset = 0, orderBy = {} }) => {
+  const query = `
+    query ($where: eosio_voters_bool_exp, $limit: Int, $offset: Int, $order_by: [eosio_voters_order_by!]) {
+      eosio_voters(where: $where, limit: $limit, offset: $offset, order_by: $order_by) {
+        owner
+        proxy
+        producers
+        staked
+        last_vote_weight
+        proxied_vote_weight
+        is_proxy
+        flags1
+        reserved2
+        reserved3
+      }
+    }
+  `
+  const { eosio_voters: eosioVoters } = await hasuraUtil.instance.request(
+    query,
+    {
+      where,
+      limit,
+      offset,
+      order_by: orderBy
+      // order_by: { staked: 'desc' }
+      // order_by: { staked: 'desc' }
+    }
+  )
+
+  return limit > 1 ? eosioVoters : eosioVoters[0]
+}
+
+module.exports = { addMany, get }
