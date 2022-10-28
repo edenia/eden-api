@@ -39,8 +39,6 @@ const get = async ({ where = {}, limit = 100, offset = 0, orderBy = {} }) => {
       limit,
       offset,
       order_by: orderBy
-      // order_by: { staked: 'desc' }
-      // order_by: { staked: 'desc' }
     }
   )
 

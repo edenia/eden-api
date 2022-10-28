@@ -15,6 +15,33 @@ const addMany = async members => {
   return data
 }
 
+const get = async ({ where = {}, limit = 100, offset = 0, orderBy = {} }) => {
+  const query = `
+    query ($where: member_bool_exp, $limit: Int, $offset: Int, $order_by: [member_order_by!]) {
+      member(where: $where, limit: $limit, offset: $offset, order_by: $order_by) {
+        account
+        name
+        status
+        nft_template_id
+        election_participation_status
+        election_rank
+        representative
+        encryption_key
+        profile
+      }
+    }
+  `
+  const { member } = await hasuraUtil.instance.request(query, {
+    where,
+    limit,
+    offset,
+    order_by: orderBy
+  })
+
+  return limit > 1 ? member : member[0]
+}
+
 module.exports = {
-  addMany
+  addMany,
+  get
 }

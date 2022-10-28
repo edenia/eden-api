@@ -10,6 +10,12 @@ type Query {
   ): EosioVotersOutput
 }
 
+type Query {
+  getMembers(
+    filter: MembersInput!
+  ): MembersOutput
+}
+
 type Mutation {
   revokeAccess(
     access: RevokeInput!
@@ -48,6 +54,12 @@ input EosioVotersInput {
   orderBy: jsonb
 }
 
+input MembersInput {
+  limit: Int!
+  offset: Int!
+  orderBy: jsonb
+}
+
 type SampleOutput {
   accessToken: String!
 }
@@ -65,6 +77,12 @@ type UpdateOutput {
 }
 
 type EosioVotersOutput {
-  voters: [jsonb!]
+  rows: [jsonb!]
+  more: Boolean
+}
+
+type MembersOutput {
+  rows: [jsonb!]
+  more: Boolean
 }
 

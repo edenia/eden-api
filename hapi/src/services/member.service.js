@@ -131,6 +131,21 @@ const updateMembersWorker = () => {
   }
 }
 
+const get = async ({ limit = 100, offset, orderBy }) => {
+  const eosioVoters = await memberGql.get({ limit, offset, orderBy })
+  const more = await memberGql.get({
+    limit: 1,
+    offset: offset + limit,
+    orderBy
+  })
+
+  return {
+    rows: Array.isArray(eosioVoters) ? eosioVoters : [eosioVoters],
+    more: !!more
+  }
+}
+
 module.exports = {
-  updateMembersWorker
+  updateMembersWorker,
+  get
 }

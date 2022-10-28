@@ -11,6 +11,13 @@ actions:
       forward_client_headers: true
     permissions:
       - role: client
+  - name: getMembers
+    definition:
+      kind: ""
+      handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/get-members'
+      forward_client_headers: true
+    permissions:
+      - role: client
   - name: revokeAccess
     definition:
       kind: synchronous
@@ -29,10 +36,12 @@ custom_types:
     - name: RevokeInput
     - name: UpdateInput
     - name: EosioVotersInput
+    - name: MembersInput
   objects:
     - name: SampleOutput
     - name: AccessOutput
     - name: RevokeOutput
     - name: UpdateOutput
     - name: EosioVotersOutput
+    - name: MembersOutput
   scalars: []
