@@ -2,36 +2,36 @@ table:
   name: member
   schema: public
 object_relationships:
-- name: eosio_voters
-  using:
-    manual_configuration:
-      column_mapping:
-        account: owner
-      insertion_order: null
-      remote_table:
-        name: eosio_voters
-        schema: public
-- name: vote
-  using:
-    manual_configuration:
-      column_mapping:
-        account: account
-      insertion_order: null
-      remote_table:
-        name: vote
-        schema: public
+  - name: eosio_voters
+    using:
+      manual_configuration:
+        column_mapping:
+          account: owner
+        insertion_order: null
+        remote_table:
+          name: eosio_voters
+          schema: public
+  - name: vote
+    using:
+      manual_configuration:
+        column_mapping:
+          account: account
+        insertion_order: null
+        remote_table:
+          name: vote
+          schema: public
 select_permissions:
-- permission:
-    allow_aggregations: true
-    columns:
-    - account
-    - encryption_key
-    - name
-    - representative
-    - election_participation_status
-    - election_rank
-    - nft_template_id
-    - status
-    - profile
-    filter: {}
-  role: guest
+  - role: guest
+    permission:
+      columns:
+        - account
+        - encryption_key
+        - name
+        - representative
+        - election_participation_status
+        - election_rank
+        - nft_template_id
+        - status
+        - profile
+      filter: {}
+      allow_aggregations: true

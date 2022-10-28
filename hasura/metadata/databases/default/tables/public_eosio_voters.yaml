@@ -2,17 +2,17 @@ table:
   name: eosio_voters
   schema: public
 select_permissions:
-- permission:
-    columns:
-    - owner
-    - proxy
-    - producers
-    - staked
-    - last_vote_weight
-    - proxied_vote_weight
-    - is_proxy
-    - flags1
-    - reserved2
-    - reserved3
-    filter: {}
-  role: guest
+  - role: guest
+    permission:
+      columns:
+        - owner
+        - proxy
+        - producers
+        - staked
+        - last_vote_weight
+        - proxied_vote_weight
+        - is_proxy
+        - flags1
+        - reserved2
+        - reserved3
+      filter: {}

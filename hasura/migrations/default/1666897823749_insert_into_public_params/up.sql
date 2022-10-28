@@ -1,0 +1,1 @@
+INSERT INTO "public"."params"("id", "next_account", "created_at", "updated_at") VALUES (E'7b94a852-fb98-4556-876e-993a2e849873', null, E'2022-10-27T19:10:23.723919+00:00', E'2022-10-27T19:10:23.723919+00:00');
