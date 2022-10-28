@@ -2,12 +2,7 @@ const { GraphQLClient } = require('graphql-request')
 
 const { hasuraConfig } = require('../config')
 const axiosUtil = require('./axios.util')
-
-const sleep = seconds => {
-  return new Promise(resolve => {
-    setTimeout(() => resolve(), seconds * 1000)
-  })
-}
+const timeUtil = require('./time.util')
 
 const hasuraAssembled = async () => {
   let hasuraReady = false
@@ -22,7 +17,7 @@ const hasuraAssembled = async () => {
         'waiting for hasura...',
         hasuraConfig.url.replace('/v1/graphql', '/healthz')
       )
-      await sleep(5)
+      await timeUtil.sleep(5)
     }
   }
 }
