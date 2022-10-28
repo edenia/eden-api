@@ -1,5 +1,20 @@
 const { hasuraUtil } = require('../utils')
 
+const add = async member => {
+  const mutation = `
+    mutation ($member: member_insert_input!) {
+      insert_member_one(object: $member, on_conflict: { constraint: member_pkey, update_columns: [name, profile] }) {
+        account
+      }
+    }
+  `
+  const { insert_member: data } = await hasuraUtil.instance.request(mutation, {
+    member
+  })
+
+  return data
+}
+
 const addMany = async members => {
   const mutation = `
     mutation ($members: [member_insert_input]!) {
@@ -15,6 +30,4 @@ const addMany = async members => {
   return data
 }
 
-module.exports = {
-  addMany
-}
+module.exports = { add, addMany }
