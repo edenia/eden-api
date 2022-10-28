@@ -1,31 +1,21 @@
 type Mutation {
-  addAccess(
-    access: AccessInput!
-  ): AccessOutput
+  addAccess(access: AccessInput!): AccessOutput
 }
 
 type Query {
-  getEosioVoters(
-    filter: EosioVotersInput!
-  ): EosioVotersOutput
+  getEosioVoters(filter: EosioVotersInput!): EosioVotersOutput
 }
 
 type Query {
-  getMembers(
-    filter: MembersInput!
-  ): MembersOutput
+  getMembers(filter: MembersInput!): MembersOutput
 }
 
 type Mutation {
-  revokeAccess(
-    access: RevokeInput!
-  ): RevokeOutput
+  revokeAccess(access: RevokeInput!): RevokeOutput
 }
 
 type Mutation {
-  updateAccess(
-    access: UpdateInput!
-  ): UpdateOutput
+  updateAccess(access: UpdateInput!): UpdateOutput
 }
 
 input SampleInput {
@@ -85,4 +75,3 @@ type MembersOutput {
   rows: [jsonb!]
   more: Boolean
 }
-
