@@ -3,5 +3,6 @@ module.exports = {
   eosUtil: require('./eos.util'),
   hasuraUtil: require('./hasura.util'),
   atomicassetsUtil: require('./atomicassets.util'),
-  jwtUtil: require('./jwt.util')
+  jwtUtil: require('./jwt.util'),
+  timeUtil: require('./time.util')
 }

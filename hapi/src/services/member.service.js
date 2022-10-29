@@ -1,5 +1,5 @@
 const { apiConfig } = require('../config')
-const { eosUtil, atomicassetsUtil } = require('../utils')
+const { eosUtil, atomicassetsUtil, timeUtil } = require('../utils')
 const { memberGql, voteGql, eosioVotersGql, paramsGql } = require('../gql')
 const { paramsConstant } = require('../constants')
 
@@ -50,9 +50,6 @@ const getVotes = async (options, lowerBound, upperBound, limit = 100) => {
 }
 
 const updateMembers = async startFrom => {
-  const membersData = []
-  const smartProxyVotesData = []
-  const eosioVotersData = []
   const {
     rows,
     more,
@@ -83,21 +80,14 @@ const updateMembers = async startFrom => {
       console.log('Error getting profile', member.account)
     }
 
-    const smartProxyVotesPromises = await getVotes(
-      smartProxyDefaultTableOptions,
-      member.account,
-      member.account,
-      1
-    )
-    const eosioVotersPromises = await getVotes(
-      eosioDefaultTableOptions,
-      member.account,
-      member.account,
-      1
-    )
     const promisesResult = await Promise.all([
-      smartProxyVotesPromises,
-      eosioVotersPromises
+      getVotes(
+        smartProxyDefaultTableOptions,
+        member.account,
+        member.account,
+        1
+      ),
+      getVotes(eosioDefaultTableOptions, member.account, member.account, 1)
     ])
     const profile = immutableData
       ? {
@@ -108,29 +98,26 @@ const updateMembers = async startFrom => {
         }
       : {}
 
-    membersData.push({ ...member, profile })
+    await memberGql.add({ ...member, profile })
     const vote = promisesResult[0].rows[0]
 
     if (promisesResult[0].rows.length) {
-      smartProxyVotesData.push({ ...vote, flag: !!vote.flag })
+      await voteGql.add({ ...vote, flag: !!vote.flag })
     }
 
     if (promisesResult[1].rows.length) {
       const vote = promisesResult[1].rows[0]
 
-      eosioVotersData.push({ ...vote, is_proxy: !!vote.is_proxy })
+      await eosioVotersGql.addMany({ ...vote, is_proxy: !!vote.is_proxy })
     }
   }
-
-  await memberGql.addMany(membersData)
-  await voteGql.addMany(smartProxyVotesData)
-  await eosioVotersGql.addMany(eosioVotersData)
 
   return { more, nextKey }
 }
 
 const initUpdateMembers = async () => {
   const startFrom = await paramsGql.get({}, 1)
+  let maxForceTries = 10
   let { more = true, nextKey = startFrom?.next_account } = {}
 
   while (more) {
@@ -138,7 +125,19 @@ const initUpdateMembers = async () => {
       ;({ more, nextKey } = await updateMembers(nextKey))
       await paramsGql.updateByPk(paramsConstant.ID, { next_account: nextKey })
     } catch (err) {
-      more = false
+      console.log(err)
+      if (maxForceTries) {
+        console.log('⏰ Sleeping to let the endpoints rest for 1.5 minutes...')
+        await timeUtil.sleep(60 * 1.5)
+
+        const helpStartFrom = await paramsGql.get({}, 1)
+
+        nextKey = helpStartFrom?.next_account
+
+        --maxForceTries
+      } else {
+        more = false
+      }
     }
   }
 }
