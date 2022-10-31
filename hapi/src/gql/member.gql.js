@@ -1,9 +1,16 @@
+const { gql } = require('graphql-request')
 const { hasuraUtil } = require('../utils')
 
 const add = async member => {
-  const mutation = `
+  const mutation = gql`
     mutation ($member: member_insert_input!) {
-      insert_member_one(object: $member, on_conflict: { constraint: member_pkey, update_columns: [name, profile] }) {
+      insert_member_one(
+        object: $member
+        on_conflict: {
+          constraint: member_pkey
+          update_columns: [name, profile]
+        }
+      ) {
         account
       }
     }
@@ -16,9 +23,15 @@ const add = async member => {
 }
 
 const addMany = async members => {
-  const mutation = `
+  const mutation = gql`
     mutation ($members: [member_insert_input]!) {
-      insert_member(objects: $members, on_conflict: { constraint: member_pkey, update_columns: [name, profile] }) {
+      insert_member(
+        objects: $members
+        on_conflict: {
+          constraint: member_pkey
+          update_columns: [name, profile]
+        }
+      ) {
         affected_rows
       }
     }
@@ -30,10 +43,23 @@ const addMany = async members => {
   return data
 }
 
-const get = async ({ where = {}, limit = 100, offset = 0, orderBy = {} }) => {
-  const query = `
-    query ($where: member_bool_exp, $limit: Int, $offset: Int, $order_by: [member_order_by!]) {
-      member(where: $where, limit: $limit, offset: $offset, order_by: $order_by) {
+const get = async (
+  instance,
+  { where = {}, limit = 100, offset = 0, orderBy = {} }
+) => {
+  const query = gql`
+    query (
+      $where: member_bool_exp
+      $limit: Int
+      $offset: Int
+      $order_by: [member_order_by!]
+    ) {
+      member(
+        where: $where
+        limit: $limit
+        offset: $offset
+        order_by: $order_by
+      ) {
         account
         name
         status
@@ -43,10 +69,19 @@ const get = async ({ where = {}, limit = 100, offset = 0, orderBy = {} }) => {
         representative
         encryption_key
         profile
+        eosio_voters {
+          producers
+          proxy
+        }
+        vote {
+          account
+          producers
+          weight
+        }
       }
     }
   `
-  const { member } = await hasuraUtil.instance.request(query, {
+  const { member } = await instance.request(query, {
     where,
     limit,
     offset,

@@ -1,9 +1,16 @@
+const { gql } = require('graphql-request')
 const { hasuraUtil } = require('../utils')
 
 const add = async eosioVoter => {
-  const mutation = `
+  const mutation = gql`
     mutation ($eosio_voter: eosio_voters_insert_input!) {
-      insert_eosio_voters_one(object: $eosio_voter, on_conflict: { constraint: eosio_voters_pkey, update_columns: [producers, weight] }) {
+      insert_eosio_voters_one(
+        object: $eosio_voter
+        on_conflict: {
+          constraint: eosio_voters_pkey
+          update_columns: [producers, weight]
+        }
+      ) {
         owner
       }
     }
@@ -19,9 +26,15 @@ const add = async eosioVoter => {
 }
 
 const addMany = async voters => {
-  const mutation = `
+  const mutation = gql`
     mutation ($voters: [eosio_voters_insert_input]!) {
-      insert_eosio_voters(objects: $voters, on_conflict: { constraint: eosio_voters_pkey, update_columns: [proxy, producers] }) {
+      insert_eosio_voters(
+        objects: $voters
+        on_conflict: {
+          constraint: eosio_voters_pkey
+          update_columns: [proxy, producers]
+        }
+      ) {
         affected_rows
       }
     }
@@ -33,10 +46,23 @@ const addMany = async voters => {
   return data
 }
 
-const get = async ({ where = {}, limit = 100, offset = 0, orderBy = {} }) => {
-  const query = `
-    query ($where: eosio_voters_bool_exp, $limit: Int, $offset: Int, $order_by: [eosio_voters_order_by!]) {
-      eosio_voters(where: $where, limit: $limit, offset: $offset, order_by: $order_by) {
+const get = async (
+  instance,
+  { where = {}, limit = 100, offset = 0, orderBy = {} }
+) => {
+  const query = gql`
+    query (
+      $where: eosio_voters_bool_exp
+      $limit: Int
+      $offset: Int
+      $order_by: [eosio_voters_order_by!]
+    ) {
+      eosio_voters(
+        where: $where
+        limit: $limit
+        offset: $offset
+        order_by: $order_by
+      ) {
         owner
         proxy
         producers
@@ -50,15 +76,12 @@ const get = async ({ where = {}, limit = 100, offset = 0, orderBy = {} }) => {
       }
     }
   `
-  const { eosio_voters: eosioVoters } = await hasuraUtil.instance.request(
-    query,
-    {
-      where,
-      limit,
-      offset,
-      order_by: orderBy
-    }
-  )
+  const { eosio_voters: eosioVoters } = await instance.request(query, {
+    where,
+    limit,
+    offset,
+    order_by: orderBy
+  })
 
   return limit > 1 ? eosioVoters : eosioVoters[0]
 }

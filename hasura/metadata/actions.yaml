@@ -18,6 +18,13 @@ actions:
       forward_client_headers: true
     permissions:
       - role: client
+  - name: getVotes
+    definition:
+      kind: ""
+      handler: '{{HASURA_GRAPHQL_ACTION_BASE_URL}}/get-votes'
+      forward_client_headers: true
+    permissions:
+      - role: client
   - name: revokeAccess
     definition:
       kind: synchronous
@@ -31,12 +38,13 @@ actions:
 custom_types:
   enums: []
   input_objects:
-    - name: SampleInput
     - name: AccessInput
     - name: RevokeInput
     - name: UpdateInput
     - name: EosioVotersInput
     - name: MembersInput
+    - name: VotesInput
+    - name: FilterInput
   objects:
     - name: SampleOutput
     - name: AccessOutput
@@ -44,4 +52,6 @@ custom_types:
     - name: UpdateOutput
     - name: EosioVotersOutput
     - name: MembersOutput
+    - name: VotesOutput
+    - name: FilterOutput
   scalars: []

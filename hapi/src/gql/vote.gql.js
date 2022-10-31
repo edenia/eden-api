@@ -30,4 +30,28 @@ const addMany = async voters => {
   return data
 }
 
-module.exports = { add, addMany }
+const get = async (
+  instance,
+  { where = {}, limit = 100, offset = 0, orderBy = {} }
+) => {
+  const query = `
+    query ($where: vote_bool_exp, $limit: Int, $offset: Int, $order_by: [vote_order_by!]) {
+      vote(where: $where, limit: $limit, offset: $offset, order_by: $order_by) {
+        account
+        producers
+        weight
+        flag
+      }
+    }
+  `
+  const { vote } = await instance.request(query, {
+    where,
+    limit,
+    offset,
+    order_by: orderBy
+  })
+
+  return limit > 1 ? vote : vote[0]
+}
+
+module.exports = { add, addMany, get }

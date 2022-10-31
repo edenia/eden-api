@@ -28,7 +28,16 @@ const instance = new GraphQLClient(hasuraConfig.url, {
   }
 })
 
+const buildClientInstance = accessToken => {
+  return new GraphQLClient(hasuraConfig.url, {
+    headers: {
+      authorization: `Bearer ${accessToken}`
+    }
+  })
+}
+
 module.exports = {
   hasuraAssembled,
-  instance
+  instance,
+  buildClientInstance
 }

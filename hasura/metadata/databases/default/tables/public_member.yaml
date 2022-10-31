@@ -2,6 +2,15 @@ table:
   name: member
   schema: public
 object_relationships:
+  - name: eosio_voters
+    using:
+      manual_configuration:
+        column_mapping:
+          account: owner
+        insertion_order: null
+        remote_table:
+          name: eosio_voters
+          schema: public
   - name: vote
     using:
       manual_configuration:

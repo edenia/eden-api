@@ -5,14 +5,14 @@ select_permissions:
   - role: client
     permission:
       columns:
-        - owner
-        - proxy
-        - producers
-        - staked
-        - last_vote_weight
-        - proxied_vote_weight
         - is_proxy
+        - last_vote_weight
+        - owner
+        - proxied_vote_weight
+        - proxy
+        - reserved3
         - flags1
         - reserved2
-        - reserved3
+        - staked
+        - producers
       filter: {}

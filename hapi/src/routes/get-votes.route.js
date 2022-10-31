@@ -1,20 +1,21 @@
-// pagination
-
 const Boom = require('@hapi/boom')
 const Joi = require('joi')
 
-const { accessService } = require('../services')
+const { voteService } = require('../services')
 
 module.exports = {
   method: 'POST',
-  path: '/get-vote',
+  path: '/get-votes',
   handler: async ({
+    auth: {
+      credentials: { token }
+    },
     payload: {
-      input: { access }
+      input: { filter }
     }
   }) => {
     try {
-      return await accessService.revoke(access.account)
+      return await voteService.get(token, filter)
     } catch (error) {
       return Boom.badRequest(error.message)
     }
@@ -24,14 +25,14 @@ module.exports = {
       payload: Joi.object({
         input: Joi.object({
           filter: Joi.object({
-            limit: Joi.string().required(),
-            offset: Joi.string().required(),
+            where: Joi.object().optional(),
+            limit: Joi.number().required(),
+            offset: Joi.number().required(),
             orderBy: Joi.object({
-              accessToken: Joi.string().optional(),
               account: Joi.string().optional(),
-              role: Joi.string().optional(),
-              state: Joi.string().optional()
-            }).required()
+              weight: Joi.string().optional(),
+              flag: Joi.string().optional()
+            }).optional()
           }).required()
         }).required()
       }).options({ stripUnknown: true })
