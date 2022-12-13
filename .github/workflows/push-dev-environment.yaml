@@ -39,6 +39,8 @@ jobs:
           # general
           INGRESS_GRAPHQL_HOST: eden-api-dev.edenia.cloud
           ENVIRONMENT: dev
+          IMAGE_NAME_HAPI: eden-api-hapi-dev
+          IMAGE_NAME_HASURA: eden-api-hasura-dev
           # postgres
           POSTGRES_USER: ${{ secrets.DEV_POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.DEV_POSTGRES_PASSWORD }}
