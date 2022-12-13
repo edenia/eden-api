@@ -12,24 +12,23 @@ jobs:
     environment: production
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
-      - name: Setup Docker
-        uses: docker-practice/actions-setup-docker@0.0.1
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log in to docker registry
-        run: |
-          echo ${{ secrets.DOCKER_HUB_PASSWORD }} | docker login \
-            --username ${{ secrets.DOCKER_HUB_USER }} \
-            --password-stdin
       - name: Build new images and push
         run: |
           make \
             build-docker-images \
             push-docker-images
         env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USER }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          IMAGE_NAME_HAPI: eden-api-hapi-dev
+          IMAGE_NAME_HASURA: eden-api-hasura-dev
 
       - name: Build kubernetes files
         id: build_kubernetes_files
@@ -38,8 +37,8 @@ jobs:
             build-kubernetes
         env:
           # general
-          NAMESPACE: api-eden
           INGRESS_GRAPHQL_HOST: eden-api.edenia.cloud
+          ENVIRONMENT: pdn
           # postgres
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
