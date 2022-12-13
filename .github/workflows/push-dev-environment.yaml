@@ -7,7 +7,7 @@ on:
       - dev
 
 jobs:
-  create-prod-image:
+  create-dev-image:
     runs-on: ubuntu-latest
     environment: development
     steps:
@@ -37,7 +37,6 @@ jobs:
             build-kubernetes
         env:
           # general
-          NAMESPACE: api-eden
           INGRESS_GRAPHQL_HOST: eden-api-dev.edenia.cloud
           ENVIRONMENT: dev
           # postgres
