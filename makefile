@@ -5,7 +5,7 @@ BLUE   := $(shell tput -Txterm setaf 6)
 RESET  := $(shell tput -Txterm sgr0)
 
 K8S_BUILD_DIR ?= ./build_k8s
-K8S_FILES := $(shell find ./kubernetes -name '*.yaml' | sed 's:./kubernetes/::g')
+K8S_FILES := $(shell find ./kubernetes-$(ENVIRONMENT) -name '*.yaml' | sed 's:./kubernetes-$(ENVIRONMENT)/::g')
 
 run:
 	make -B postgres
