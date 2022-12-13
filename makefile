@@ -77,7 +77,7 @@ build-kubernetes: ./kubernetes-$(ENVIRONMENT)
 	@rm -Rf $(K8S_BUILD_DIR) && mkdir -p $(K8S_BUILD_DIR)
 	@for file in $(K8S_FILES); do \
 		mkdir -p `dirname "$(K8S_BUILD_DIR)/$$file"`; \
-		$(SHELL_EXPORT) envsubst <./kubernetes/$$file >$(K8S_BUILD_DIR)/$$file; \
+		$(SHELL_EXPORT) envsubst <./kubernetes-$(ENVIRONMENT)/$$file >$(K8S_BUILD_DIR)/$$file; \
 	done
 
 deploy-kubernetes: ##@devops Publish the build k8s files
