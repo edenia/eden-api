@@ -72,7 +72,7 @@ docker-clean:
 	@docker volume rm eden-api_postgres_data
 
 build-kubernetes: ##@devops Generate proper k8s files based on the templates
-build-kubernetes: ./kubernetes
+build-kubernetes: ./kubernetes-$(ENVIRONMENT)
 	@echo "Build kubernetes files..."
 	@rm -Rf $(K8S_BUILD_DIR) && mkdir -p $(K8S_BUILD_DIR)
 	@for file in $(K8S_FILES); do \
@@ -97,9 +97,7 @@ build-docker-images:
 
 push-docker-images: ##@devops Publish docker images
 push-docker-images:
-	@echo $(DOCKER_PASSWORD) | docker login \
-		--username $(DOCKER_USERNAME) \
-		--password-stdin
-	for dir in $(SUBDIRS); do \
+	@echo "Pushing docker containers..."
+	@for dir in $(SUBDIRS); do \
 		$(MAKE) push-image -C $$dir; \
 	done

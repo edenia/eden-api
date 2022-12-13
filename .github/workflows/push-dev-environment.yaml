@@ -1,0 +1,72 @@
+name: Build images from latest dev branch
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - dev
+
+jobs:
+  create-prod-image:
+    runs-on: ubuntu-latest
+    environment: development
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build new images and push
+        run: |
+          make \
+            build-docker-images \
+            push-docker-images
+        env:
+          IMAGE_NAME_HAPI: eden-api-hapi-dev
+          IMAGE_NAME_HASURA: eden-api-hasura-dev
+
+      - name: Build kubernetes files
+        id: build_kubernetes_files
+        run: |
+          make \
+            build-kubernetes
+        env:
+          # general
+          NAMESPACE: api-eden
+          INGRESS_GRAPHQL_HOST: eden-api-dev.edenia.cloud
+          ENVIRONMENT: dev
+          # postgres
+          POSTGRES_USER: ${{ secrets.DEV_POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DEV_POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DEV_POSTGRES_DB }}
+          POSTGRES_DATA: ${{ secrets.DEV_POSTGRES_DATA }}
+          # hapi
+          HAPI_SERVER_PORT: 9090
+          HAPI_SERVER_ADDRESS: 0.0.0.0
+          HAPI_NETWORK_API: "https://jungle.edenia.cloud"
+          HAPI_NETWORK_CHAIN_ID: "73e4385a2708e6d7048834fbc1079f2fabb17b3c125b146af438971e90716c4d"
+          HAPI_HASURA_URL: ${{ secrets.DEV_HAPI_HASURA_URL }}
+          HAPI_HASURA_ADMIN_SECRET: ${{ secrets.DEV_HAPI_HASURA_ADMIN_SECRET }}
+          HAPI_EDENSMARTPRX_CONTRACT: "edensmartprx"
+          HAPI_EDEN_CONTRACT: "genesis.eden"
+          HAPI_AA_BASE_URL: "https://jungle-aa.edenia.cloud"
+          # hasura
+          HASURA_GRAPHQL_ENABLE_CONSOLE: true
+          HASURA_GRAPHQL_DATABASE_URL: ${{ secrets.DEV_HASURA_GRAPHQL_DATABASE_URL }}
+          HASURA_GRAPHQL_ADMIN_SECRET: ${{ secrets.DEV_HASURA_GRAPHQL_ADMIN_SECRET }}
+          HASURA_GRAPHQL_UNAUTHORIZED_ROLE: ${{ secrets.DEV_HASURA_GRAPHQL_UNAUTHORIZED_ROLE }}
+          HASURA_GRAPHQL_ACTION_BASE_URL: ${{ secrets.DEV_HASURA_GRAPHQL_ACTION_BASE_URL }}
+
+      - name: Deploy kubernetes files
+        uses: steebchen/kubectl@v1.1.0
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.DEV_KUBE_CONFIG_DATA }}
+          NAMESPACE: eden-api
+          K8S_BUILD_DIR: build_k8s
+        with:
+          args: version && make deploy-kubernetes
