@@ -35,7 +35,7 @@ services:
       HAPI_AA_BASE_URL: "${HAPI_AA_BASE_URL}"
   hasura:
     container_name: "eden-api-hasura"
-    image: hasura/graphql-engine:v2.13.0.cli-migrations-v3
+    image: hasura/graphql-engine:latest.cli-migrations-v3.ubuntu
     ports:
       - "8080:8080"
     depends_on:

@@ -70,7 +70,7 @@ const updateMembers = async startFrom => {
 
     let immutableData = null
     try {
-      ;({ immutable_data: immutableData } =
+      ; ({ immutable_data: immutableData } =
         await atomicassetsUtil.api.getTemplate(
           apiConfig.edenContract,
           member.nft_template_id.toString()
@@ -91,11 +91,11 @@ const updateMembers = async startFrom => {
     ])
     const profile = immutableData
       ? {
-          name: immutableData.name,
-          image: immutableData.img,
-          bio: immutableData.bio,
-          social: JSON.parse(immutableData.social)
-        }
+        name: immutableData.name,
+        image: immutableData.img,
+        bio: immutableData.bio,
+        social: JSON.parse(immutableData.social)
+      }
       : {}
 
     await memberGql.add({ ...member, profile })
@@ -122,7 +122,7 @@ const initUpdateMembers = async () => {
 
   while (more) {
     try {
-      ;({ more, nextKey } = await updateMembers(nextKey))
+      ; ({ more, nextKey } = await updateMembers(nextKey))
       await paramsGql.updateByPk(paramsConstant.ID, { next_account: nextKey })
     } catch (err) {
       console.log(err)
@@ -145,7 +145,7 @@ const initUpdateMembers = async () => {
 const updateMembersWorker = () => {
   return {
     name: 'UPDATE EDEN MEMBERS',
-    interval: 60 * 60, // 1h
+    interval: 60 * 30, // 0.5h
     action: initUpdateMembers
   }
 }
