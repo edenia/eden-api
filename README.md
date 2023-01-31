@@ -1,49 +1,91 @@
-<div align="center">
-	<a href="https://eoscostarica.io">
-		<img src="https://raw.githubusercontent.com/eoscostarica/.github/master/.github/workflows/images/eos-costa-rica-logo.png" width="300">
-	</a>
+## About the Project
 
-![](https://img.shields.io/github/license/eoscostarica/backend-boilerplate) ![](https://img.shields.io/badge/code%20style-standard-brightgreen.svg) ![](https://img.shields.io/badge/%E2%9C%93-collaborative_etiquette-brightgreen.svg) [![](https://img.shields.io/twitter/follow/eoscostarica?style=social)](https://twitter.com/EOSCostaRica) ![](https://img.shields.io/github/forks/eoscostarica/backend-boilerplate?style=social)
+_"Eden api is a service that collects and unifies the data of the members of the Eden community and allows them to be consulted through a simple query."_
 
-</div>
+**Table of Contents**
 
-# EOSIO Backend Boilerplate
+1. About The Project
+2. Content Table
+3. Project Purpose
+4. Tech Stack
+5. Development Environment
+6. File Structure
+7. Contributing
+8. About Company
 
-**A highly scalable skeleton with best practices, ideal for backend projects quick start.**
+## Project Purpose
 
-## Features!
+_"The objective of this product is to provide the developers of the Eden community with a tool with which they can consult and have at hand the necessary information about the members of Eden, and thus they can use this information to feed their apps._
 
-This boilerplate features all the latest tools and practices in the industry
+_This api service constantly consults the tables in the blockchain of the Eden contracts related to the members, unifies this collected information and stores it in a database where it can be consulted more quickly, just by executing a query."_
 
-- **[hasura](https://hasura.io)**
-  Hasura GraphQL Engine is an opensource service that connects to your databases & microservices and auto-generates a production-ready GraphQL backend
+## Tech Stack
 
-- **[hapi](https://hapi.dev/)**
-  A back end service for custom busines logic integrated with hasura using [actions](https://hasura.io/docs/1.0/graphql/manual/actions/index.html#actions)
+- eslint
+- eosjs
+- graphql
+- hapi
+- nodejs
+- atomicassets
+- docker
 
-- **[docker-compose](https://docs.docker.com/compose/)**
-  Compose is a tool for defining and running multi-container Docker applications
+## Development Environment
+
+Specify where were the project developed, in case someone else wants to make a contribution to the project progress, for example:
+
+[eden-api.edenia.cloud](https://eden-api.edenia.cloud) is running on the EOS MainNet and is built from the `master` branch, our production branch.
+
+[eden-api-dev.edenia.cloud](https://eden-api-dev.edenia.cloud) is running on the Jungle 4 TestNet and is built from the `dev` branch used for development, integration, and testing new features.
+
+### Quick Start
+
+1. Clone this repo using `git clone https://github.com/edenia/eden-api.git`
+2. Move to the appropriate directory: `cd eden-api`.
+3. Excute `cp .env.example .env`
+4. Excute `make run`
+5. Go to http://localhost:8080.
+
+### Getting Started
+
+#### **Prerequisites**
+
+- `yarn`
+- `node`
+- `docker`
+- `docker compose`
+- `hasura`
+- `hasura cli`
+
+#### **Installation**
+
+1. Clone the repository `git clone https://github.com/your_username_/Project-Name.git`
+2. Install packages and run the project
+   `make run`
 
 ## File Structure
 
 Within the download you'll find the following directories and files:
 
 ```bash
-eoscrbackendboilerplate/
+eden-api/
 ├── hasura
 │ ├── migrations
 │ └── config.yaml
 ├── hapi
 │ ├── src
 │ | ├── config
-│ | ├── api
+│ | ├── constants
+│ | ├── gql
 │ | ├── routes
+│ | ├── services
+│ | ├── utils
 │ | └── config.yaml
 │ ├── .dockerignore
 │ ├── .eslintrc
 │ ├── .prettierrc
 │ ├── Dockerfile
-│ ├── yarn-lock.json
+│ ├── makefile
+│ ├── yarn.lock
 │ └── package.json
 ├── .env.example
 ├── .gitignore
@@ -55,55 +97,30 @@ eoscrbackendboilerplate/
 └── README.md
 ```
 
-There are some important folders like
-
-- `hapi/src/api` should have all reusable code for example a code to generate tax invoice
-- `hapi/src/routes` this folder should only have the endpoint mapping and params validations and use functions from api folder to handle the business logic
-
-## Installation
-
-Basic knowledge about Docker, Docker Compose and NodeJS is required.
-
-### Getting started
-
-Some things you need before getting started:
-
-- [git](https://git-scm.com/)
-- [node.js](https://nodejs.org/es/)
-- [docker](https://www.docker.com/)
-- [docker-compose](https://docs.docker.com/compose/)
-- [Hasura CLI](https://hasura.io/docs/1.0/graphql/manual/hasura-cli/install-hasura-cli.html#install-hasura-cli)
-
-### Running for the first time
-
-1.  Clone this repo using `git clone --depth=1 https://github.com/eoscostarica/backend-boilerplate.git <YOUR_PROJECT_NAME>`
-2.  Move to the appropriate directory: `cd <YOUR_PROJECT_NAME>`.
-3.  Copy the `.env.example` then update the environment variables according to your needs
-
-### Quick start
-
-At this point you can execute `make run`, you can check the services runing on:
-
-- hapi at http://localhost:9090
-- hasura at http://localhost:9695
-
-
 ## Contributing
 
-Please Read EOS Costa Rica's [Open Source Contributing Guidelines](https://developers.eoscostarica.io/docs/open-source-guidelines).
+If you want to make a contribution, please follow the next steps:
 
-Please report bugs big and small by [opening an issue](https://github.com/eoscostarica/backend-boilerplate/issues)
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m '<type>(<scope>): <subject>'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## About EOS Costa Rica
+Please Read EOS Costa Rica's [Open Source Contributing Guidelines](https://guide.eoscostarica.io/docs/open-source-guidelines/) for more information about programming conventions.
+
+If you find a bug, please report big and small bugs by [**opening an issue**](https://github.com/edenia/eden-api/issues)
+
+## About Edenia
 
 <span align="center">
 
-<a href="https://eoscostarica.io"><img width="300" alt="image" src="https://raw.githubusercontent.com/eoscostarica/.github/master/.github/workflows/images/eos-costa-rica-logo.png"></img></a>
+<a href="https://edenia.com"><img width="400" alt="image" src="https://edenia.com/_next/image?url=%2F_next%2Fstatic%2Fimage%2Fpublic%2Flogos%2Flogo-edenia-punto-verde.4c66f48b284b2705f9957048f549b1eb.png&w=384&q=75"></img></a>
 
-[![Twitter](https://img.shields.io/twitter/follow/EOSCostaRica?style=for-the-badge)](https://twitter.com/EdeniaWeb3)
-[![Discord](https://img.shields.io/discord/946500573677625344?color=black&label=Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/YeGcF6QwhP)
-
-EOS Costa Rica is an independently-owned, self-funded, bare-metal Genesis block producer that provides stable and secure infrastructure for the EOS mainnet. We support open source software for our community while offering enterprise solutions and custom smart contract development for our clients.
+[![Twitter](https://img.shields.io/twitter/follow/EdeniaWeb3?style=for-the-badge)](https://twitter.com/EdeniaWeb3)
+[![Discord](https://img.shields.io/discord/946500573677625344?color=black&label=discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/YeGcF6QwhP)
 
 </span>
+Edenia runs independent blockchain infrastructure and develops web3 solutions. Our team of technology-agnostic builders has been operating since 1987, leveraging the newest technologies to make the internet safer, more efficient, and more transparent.
 
+<!-- ![Metrics](/profile/metrics.svg) -->
